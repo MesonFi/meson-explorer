@@ -13,7 +13,7 @@ const fetcher = async swapId => {
   if (!swapId) {
     throw new Error('No swap id')
   }
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/swap/${swapId}`)
+  const res = await fetch(`https://testnet-relayer.meson.fi/api/v1/swap/${swapId}`)
   if (res.status >= 400) {
     throw new Error('Swap not found')
   }
@@ -32,15 +32,15 @@ export default function Swap() {
 
   if (error) {
     return (
-      <div className='shadow overflow-hidden border-b border-gray-200 rounded-lg'>
-        <div className='bg-white px-4 py-5 sm:px-6'>
+      <div className='overflow-hidden border-b border-gray-200 rounded-lg shadow'>
+        <div className='px-4 py-5 bg-white sm:px-6'>
           <div className='flex items-center'>
-            <span className='text-xl leading-6 font-medium text-gray-900'>Swap</span>
-            <span className='ml-2 px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-600'>
+            <span className='text-xl font-medium leading-6 text-gray-900'>Swap</span>
+            <span className='inline-flex px-2 ml-2 text-sm font-semibold leading-5 text-red-600 bg-red-100 rounded-full'>
               ERROR
             </span>
           </div>
-          <p className='mt-1 max-w-2xl text-gray-500'>{swapId}</p>
+          <p className='max-w-2xl mt-1 text-gray-500'>{swapId}</p>
         </div>
         <div className='border-t border-gray-200'>
           <dl>
@@ -54,7 +54,7 @@ export default function Swap() {
   } else if (!data) {
     return (
       <div className='flex items-center justify-center mt-6'>
-        <svg className='animate-spin h-5 w-5 text-gray-500' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'>
+        <svg className='w-5 h-5 text-gray-500 animate-spin' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'>
           <circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4'></circle>
           <path className='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'></path>
         </svg>
@@ -92,10 +92,10 @@ function CorrectSwap({ swapId, swap }) {
   }
 
   return (
-    <div className='shadow overflow-hidden border-b border-gray-200 rounded-lg'>
-      <div className='bg-white px-4 py-5 sm:px-6'>
+    <div className='overflow-hidden border-b border-gray-200 rounded-lg shadow'>
+      <div className='px-4 py-5 bg-white sm:px-6'>
         <div className='flex items-center'>
-          <span className='text-xl leading-6 font-medium text-gray-900'>Swap</span>
+          <span className='text-xl font-medium leading-6 text-gray-900'>Swap</span>
           <span className={classnames(
             'ml-2 px-2 inline-flex text-sm leading-5 font-semibold rounded-full',
             badgeClassnames(status)
@@ -103,12 +103,12 @@ function CorrectSwap({ swapId, swap }) {
             {status}
           </span>
         </div>
-        <p className='mt-1 max-w-2xl text-gray-500'>{swapId}</p>
+        <p className='max-w-2xl mt-1 text-gray-500'>{swapId}</p>
       </div>
       <div className='border-t border-gray-200'>
         <dl>
           <ListRow bg title='From'>
-            <div className="text-indigo-600 hover:text-indigo-500 hover:underline">
+            <div className="text-primary hover:underline">
               <Link href={`/address/${swap.initiator}`}>
                 {swap.initiator}
               </Link>
@@ -116,12 +116,12 @@ function CorrectSwap({ swapId, swap }) {
             <div className="text-sm text-gray-500">
               {from.networkName}
               <a href={`${from.explorer}/address/${swap.initiator}`} target='_blank' rel='noreferrer'>
-                <ExternalLinkIcon className='inline-block ml-1 w-4 hover:text-indigo-500' aria-hidden='true' />
+                <ExternalLinkIcon className='inline-block w-4 ml-1 hover:text-indigo-500' aria-hidden='true' />
               </a>
             </div>
           </ListRow>
           <ListRow title='To'>
-            <div className="text-indigo-600 hover:text-indigo-500 hover:underline">
+            <div className="text-primary hover:underline">
               <Link href={`/address/${swap.initiator}`}>
                 {recipient}
               </Link>
@@ -131,7 +131,7 @@ function CorrectSwap({ swapId, swap }) {
               {
                 recipient &&
                 <a href={`${to.explorer}/address/${recipient}`} target='_blank' rel='noreferrer'>
-                  <ExternalLinkIcon className='inline-block ml-1 w-4 hover:text-indigo-500' aria-hidden='true' />
+                  <ExternalLinkIcon className='inline-block w-4 ml-1 hover:text-primary' aria-hidden='true' />
                 </a>
               }
             </div>
@@ -139,7 +139,7 @@ function CorrectSwap({ swapId, swap }) {
           <ListRow bg title='Amount'>
             {ethers.utils.formatUnits(swap.amount, 6)}{' '}
             <a
-              className='text-sm hover:text-indigo-500 hover:underline '
+              className='text-sm hover:text-primary hover:underline '
               href={`${from.explorer}/token/${from.token.addr}`}
               target='_blank'
               rel='noreferrer'
@@ -148,7 +148,7 @@ function CorrectSwap({ swapId, swap }) {
             </a>
             <span className='text-sm text-gray-500'>{' -> '}</span>
             <a
-              className='text-sm hover:text-indigo-500 hover:underline '
+              className='text-sm hover:text-primary hover:underline '
               href={`${to.explorer}/token/${to.token.addr}`}
               target='_blank'
               rel='noreferrer'
