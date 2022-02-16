@@ -13,7 +13,7 @@ function classNames(...classes) {
 
 export default function Navbar() {
   return (
-    <Disclosure as='nav' className='bg-primary'>
+    <Disclosure as='nav' className=' bg-gradient-to-r from-gradient-start to-gradient-end'>
       {({ open }) => (
         <>
           <div className='px-2 mx-auto max-w-7xl sm:px-6 lg:px-8'>

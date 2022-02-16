@@ -13,7 +13,7 @@ const fetcher = async swapId => {
   if (!swapId) {
     throw new Error('No swap id')
   }
-  const res = await fetch(`https://testnet-relayer.meson.fi/api/v1/swap/${swapId}`)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/swap/${swapId}`)
   if (res.status >= 400) {
     throw new Error('Swap not found')
   }
@@ -116,7 +116,7 @@ function CorrectSwap({ swapId, swap }) {
             <div className="text-sm text-gray-500">
               {from.networkName}
               <a href={`${from.explorer}/address/${swap.initiator}`} target='_blank' rel='noreferrer'>
-                <ExternalLinkIcon className='inline-block w-4 ml-1 hover:text-indigo-500' aria-hidden='true' />
+                <ExternalLinkIcon className='inline-block w-4 ml-1 hover:text-primary' aria-hidden='true' />
               </a>
             </div>
           </ListRow>
