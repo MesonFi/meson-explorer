@@ -74,20 +74,29 @@ export default async function handler(req, res) {
 
     const fromNetwork = networks.find(item => item.name === inChain)
     const toNetwork = networks.find(item => item.name === outChain)
-    const fromSymbol = fromNetwork.tokens.find(item => item.symbol.startsWith(token)).symbol
-    const toSymbol = toNetwork.tokens.find(item => item.symbol.startsWith(token)).symbol
+    const fromSymbol = fromNetwork.tokens.find(item => item.symbol.startsWith(token))?.symbol
+    const toSymbol = toNetwork.tokens.find(item => item.symbol.startsWith(token))?.symbol
+
+    if(!toSymbol || !fromSymbol) {
+      return res.json({
+        message: 'This swap route is not available',
+        code: 500
+      })
+    }
 
     const rule = matchSwapRule(rulesInfo.rules, {
       from: [fromNetwork.id, fromSymbol],
       to: [toNetwork.id, toSymbol]
     })
     if (rule.limit === 0) {
-      res.json({
+      return res.json({
         message: 'This swap route is not available',
         code: 500
       })
     }
-    const amount = BigNumber.from(queryAmount || '0')
+    const value = ethers.utils.parseUnits(queryAmount || '0', 6)
+    const amount = BigNumber.from(value)
+
     // const waiveServiceFee = swapData.premium
     // ? swapData.premium.used < swapData.premium.quota
     // : (cached.waived < 10000_000_000 && cached.swaps < 10)
@@ -99,7 +108,7 @@ export default async function handler(req, res) {
     let lpFee = BigNumber.from(0)
 
     if (!rule || amount.eq(0)) {
-      res.json({
+      return res.json({
         data: {
           totalFee,
           originalFee,
@@ -128,7 +137,7 @@ export default async function handler(req, res) {
       break
     }
 
-    res.json({
+    return res.json({
       data: {
         totalFee: fromValue(totalFee),
         originalFee: fromValue(originalFee),
