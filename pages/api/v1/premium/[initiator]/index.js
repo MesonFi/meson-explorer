@@ -15,6 +15,13 @@ export default async function handler(req, res) {
     } catch (e) {
       res.status(400).json({ error: { code: -32602, message: `Failed to claim premium: ${e.message}` } })
     }
+  } else if (req.method === 'PUT') {
+    try {
+      const result = await _updatePremiumRoleClaim(initiator, req.body)
+      res.json({ result })
+    } catch (e) {
+      res.status(400).json({ error: { code: -32602, message: `Failed to update premium: ${e.message}` } })
+    }
   } else if (req.method === 'OPTIONS') {
     res.end()
   } else {
@@ -48,6 +55,20 @@ async function post(initiator) {
   since.setUTCHours(0,0,0,0)
   const premium = await _create(initiator, 500000_000000, since, undefined, { hash: initiator, erc20Value: 0 })
   return [_.omit(premium.toJSON(), ['_id', '__v', 'meta'])]
+}
+
+async function _updatePremiumRoleClaim(initiator, body) {
+  // TODO: add the limit to invoke
+  if(!body.discordId) {
+    throw new Error('Update premium error')
+  }
+
+  const premiums = await get(initiator)
+  if (!premiums?.length) {
+    throw new Error('The address is not Meson Premium')
+  }
+
+  return await Premiums.findOneAndUpdate({ initiator }, { $addToSet: { params: { roleClaimed: body.claim, discordId: body.discordId } }})
 }
 
 export async function onPremiumPaid(data) {
