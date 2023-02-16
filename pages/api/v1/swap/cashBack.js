@@ -16,12 +16,9 @@ export default async function handler(req, res) {
 }
 
 async function get(address) {
-  const cashbackBanners = await Banners.aggregate([
-    { $match: { disabled: false, text: 'banner|cash-back' } },
-  ])
+  const found = await Banners.findOne({ text: 'banner|cash-back' }).sort({ priority: -1 })
 
-  const banner = cashbackBanners[0]
-
+  const banner = found?._doc
   if (banner) {
     const { networkId, min, startDate, endDate, from } = banner?.params || {}
     const shortSlip44ID = mesonPresets.getNetwork(networkId)?.shortSlip44
@@ -54,4 +51,3 @@ async function get(address) {
     return null
   }
 }
-
