@@ -69,6 +69,13 @@ export default function SwapDetail() {
                 {!swap.version && <div className='text-sm text-gray-500'>v0 encoding</div>}
                 <SwapSaltBadges swap={swap} />
               </ListRow>
+              <ListRow title='Route'>
+                <div className='flex items-center'>
+                  <TagNetwork network={from.network} />
+                  <div className='text-sm text-gray-500 mx-1'>{'->'}</div>
+                  <TagNetwork network={to.network} />
+                </div>
+              </ListRow>
               <SwapAmountAndFeeDisplay swap={swap} from={from} to={to} />
               <ListRow title='Expires at'>
                 {new Date(swap.expireTs * 1000).toLocaleString()}
