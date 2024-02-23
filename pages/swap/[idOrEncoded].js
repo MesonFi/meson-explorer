@@ -8,7 +8,6 @@ import { ethers } from 'ethers'
 
 import { XCircleIcon } from '@heroicons/react/solid'
 import { DocumentTextIcon } from '@heroicons/react/outline'
-import { Swap } from '@mesonfi/sdk'
 
 import fetcher from 'lib/fetcher'
 import socket from 'lib/socket'
@@ -265,7 +264,7 @@ function CorrectSwap({ data: raw }) {
   )
 }
 
-function EncodedSplitted({ swap }) {
+export function EncodedSplitted({ swap }) {
   const encoded = swap.encoded
   const splitPos = swap._splitPos + 12
   return (
@@ -357,7 +356,7 @@ function EncodedSplitted({ swap }) {
   )
 }
 
-function SwapAmountAndFeeDisplay({ status, from, to, swap, srFee = swap.serviceFee.toNumber(), lpFee = swap.fee.toNumber(), hideSharingFee }) {
+export function SwapAmountAndFeeDisplay({ status, from, to, swap, srFee = swap.serviceFee.toNumber(), lpFee = swap.fee.toNumber(), hideSharingFee }) {
   let swapCoreError = false
   let amountWithoutCoreToken = swap.amount.sub(swap.amountForCoreToken)
   if (amountWithoutCoreToken.lt(0)) {
@@ -527,7 +526,7 @@ function SwapActionButton({ role, data, swap, status }) {
   )
 }
 
-function SwapSaltBadges({ swap }) {
+export function SwapSaltBadges({ swap }) {
   const badges = []
   if (swap.willWaiveFee) {
     badges.push('No Service Fee')
