@@ -8,6 +8,7 @@ import { ethers } from 'ethers'
 
 import { XCircleIcon } from '@heroicons/react/solid'
 import { DocumentTextIcon } from '@heroicons/react/outline'
+import { Swap } from '@mesonfi/sdk'
 
 import fetcher from 'lib/fetcher'
 import socket from 'lib/socket'
@@ -52,6 +53,31 @@ export default function SwapDetail() {
   const { data, error } = useSWR(`swap/${idOrEncoded}`, fetcher)
 
   if (error) {
+    try {
+      const { swap, from, to } = presets.parseInOutNetworkTokens(idOrEncoded)
+      return (
+        <Card>
+          <CardTitle
+            title='Swap'
+            badge={<SwapStatusBadge status='TEMPORARY' />}
+            subtitle='An encoded swap'
+          />
+          <CardBody border={false}>
+            <dl>
+              <ListRow title='Encoded As'>
+                <EncodedSplitted swap={swap} />
+                {!swap.version && <div className='text-sm text-gray-500'>v0 encoding</div>}
+                <SwapSaltBadges swap={swap} />
+              </ListRow>
+              <SwapAmountAndFeeDisplay swap={swap} from={from} to={to} />
+              <ListRow title='Expires at'>
+                {new Date(swap.expireTs * 1000).toLocaleString()}
+              </ListRow>
+            </dl>
+          </CardBody>
+        </Card>
+      )
+    } catch {}
     return (
       <Card>
         <CardTitle
@@ -61,7 +87,7 @@ export default function SwapDetail() {
         />
         <CardBody border={false}>
           <dl>
-            <ListRow title='Swap ID'>
+            <ListRow title='Query'>
               <div className='break-all'>{idOrEncoded}</div>
             </ListRow>
           </dl>
@@ -133,22 +159,6 @@ function CorrectSwap({ data: raw }) {
     const recipient = data.fromTo[1] || ''
     const { srFee = 0, lpFee = 0 } = data
 
-    let swapCoreError = false
-    let amountWithoutCoreToken = swap.amount.sub(swap.amountForCoreToken)
-    if (amountWithoutCoreToken.lt(0)) {
-      swapCoreError = true
-      amountWithoutCoreToken = swap.amount
-    }
-
-    let inAmount = ethers.utils.formatUnits(amountWithoutCoreToken, swap._isUCT() ? 4 : 6)
-    let outAmount = ethers.utils.formatUnits(amountWithoutCoreToken.sub(srFee + lpFee).sub(swap.amountToShare), 6)
-    const coreTokenAmount = ethers.utils.formatUnits(swap.coreTokenAmount, 6)
-    const coreSymbol = presets.getCoreSymbol(to.network.id)
-    if (swap.deprecatedEncoding) {
-      inAmount = ethers.utils.formatUnits(swap.amount.add(swap.fee), swap._isUCT() ? 4 : 6)
-      outAmount = ethers.utils.formatUnits(swap.amount, 6)
-    }
-    const feeSide = (swap.deprecatedEncoding || to.token.fake || outAmount == 0) ? from : to
     body = (
       <dl>
         {isRoot && <OnChainStatus data={data} from={from} to={to} />}
@@ -184,52 +194,15 @@ function CorrectSwap({ data: raw }) {
             </span>
           </div>
         </ListRow>
-        <ListRow title='Amount'>
-          {
-            Number(inAmount) > 0 &&
-            <div className={classnames(
-              'w-fit relative flex items-center',
-              CancelledStatus.includes(status) && 'opacity-30 before:block before:absolute before:w-full before:h-0.5 before:bg-black before:z-10'
-            )}>
-              {outAmount < 0 && <FailedIcon />}
-              <div className='mr-1'>{inAmount}</div>
-              <TagNetworkToken explorer={from.network.explorer} token={from.token} className={CancelledStatus.includes(status) && 'text-black'}/>
-              <div className='text-sm text-gray-500 mx-1'>{'->'}</div>
-              <div className='mr-1'>{outAmount}</div>
-              {!to.token.fake && outAmount != 0 && <TagNetworkToken explorer={to.network.explorer} token={to.token} className={CancelledStatus.includes(status) && 'text-black'} />}
-            </div>
-          }
-          {
-            coreTokenAmount > 0 &&
-            <div className={classnames(
-              'w-fit relative flex items-center',
-              CancelledStatus.includes(status) && 'opacity-30 before:block before:absolute before:w-full before:h-0.5 before:bg-black before:z-10'
-            )}>
-              {swapCoreError && <FailedIcon />}
-              <div className='mr-1'>{ethers.utils.formatUnits(swap.amountForCoreToken, 6)}</div>
-              <TagNetworkToken explorer={from.network.explorer} token={from.token} className={CancelledStatus.includes(status) && 'text-black'}/>
-              <div className='text-sm text-gray-500 mx-1'>{'->'}</div>
-              <div className='mr-1'>{coreTokenAmount}</div>
-              <TagNetworkToken explorer={to.network.explorer} token={{ symbol: coreSymbol }} className={CancelledStatus.includes(status) && 'text-black'}/>
-            </div>
-          }
-        </ListRow>
-        {
-          !FailedStatus.includes(status) &&
-          <ListRow title='Fee'>
-            <div className='flex items-center'>
-              <div className='mr-1'>{ethers.utils.formatUnits(srFee + lpFee + swap.amountToShare.toNumber(), 6)}</div>
-              <TagNetworkToken explorer={feeSide.network.explorer} token={feeSide.token} />
-            </div>
-            <div className={classnames('text-sm text-gray-500', srFee + lpFee + swap.amountToShare.toNumber() > 0 ? '' : 'hidden')}>
-            {
-              (authorized || isLp) && swap.amountToShare.gt(0)
-              ? `${ethers.utils.formatUnits(srFee, 6)} Service fee + ${ethers.utils.formatUnits(lpFee, 6)} LP fee + ${ethers.utils.formatUnits(swap.amountToShare.toNumber(), 6)} Share fee`
-              : `${ethers.utils.formatUnits(srFee, 6)} Service fee + ${ethers.utils.formatUnits(lpFee + swap.amountToShare.toNumber(), 6)} LP fee`
-            }
-            </div>
-          </ListRow>
-        }
+        <SwapAmountAndFeeDisplay
+          status={status}
+          from={from}
+          to={to}
+          swap={swap}
+          srFee={srFee}
+          lpFee={lpFee}
+          hideSharingFee={!authorized && !isLp}
+        />
         {
           data.tempAt
           ? <ListRow title='Temporarily created'>
@@ -374,6 +347,76 @@ function EncodedSplitted({ swap }) {
         </div>
       </div>
     </div>
+  )
+}
+
+function SwapAmountAndFeeDisplay({ status, from, to, swap, srFee = swap.serviceFee.toNumber(), lpFee = swap.fee.toNumber(), hideSharingFee }) {
+  let swapCoreError = false
+  let amountWithoutCoreToken = swap.amount.sub(swap.amountForCoreToken)
+  if (amountWithoutCoreToken.lt(0)) {
+    swapCoreError = true
+    amountWithoutCoreToken = swap.amount
+  }
+
+  let inAmount = ethers.utils.formatUnits(amountWithoutCoreToken, swap._isUCT() ? 4 : 6)
+  let outAmount = ethers.utils.formatUnits(amountWithoutCoreToken.sub(srFee + lpFee).sub(swap.amountToShare), 6)
+  const coreTokenAmount = ethers.utils.formatUnits(swap.coreTokenAmount, 6)
+  const coreSymbol = presets.getCoreSymbol(to.network.id)
+  if (swap.deprecatedEncoding) {
+    inAmount = ethers.utils.formatUnits(swap.amount.add(swap.fee), swap._isUCT() ? 4 : 6)
+    outAmount = ethers.utils.formatUnits(swap.amount, 6)
+  }
+  const feeSide = (swap.deprecatedEncoding || to.token.fake || outAmount == 0) ? from : to
+
+  return (
+    <>
+      <ListRow title='Amount'>
+        {
+          Number(inAmount) > 0 &&
+          <div className={classnames(
+            'w-fit relative flex items-center',
+            CancelledStatus.includes(status) && 'opacity-30 before:block before:absolute before:w-full before:h-0.5 before:bg-black before:z-10'
+          )}>
+            {outAmount < 0 && <FailedIcon />}
+            <div className='mr-1'>{inAmount}</div>
+            <TagNetworkToken explorer={from.network.explorer} token={from.token} className={CancelledStatus.includes(status) && 'text-black'}/>
+            <div className='text-sm text-gray-500 mx-1'>{'->'}</div>
+            <div className='mr-1'>{outAmount}</div>
+            {!to.token.fake && outAmount != 0 && <TagNetworkToken explorer={to.network.explorer} token={to.token} className={CancelledStatus.includes(status) && 'text-black'} />}
+          </div>
+        }
+        {
+          coreTokenAmount > 0 &&
+          <div className={classnames(
+            'w-fit relative flex items-center',
+            CancelledStatus.includes(status) && 'opacity-30 before:block before:absolute before:w-full before:h-0.5 before:bg-black before:z-10'
+          )}>
+            {swapCoreError && <FailedIcon />}
+            <div className='mr-1'>{ethers.utils.formatUnits(swap.amountForCoreToken, 6)}</div>
+            <TagNetworkToken explorer={from.network.explorer} token={from.token} className={CancelledStatus.includes(status) && 'text-black'}/>
+            <div className='text-sm text-gray-500 mx-1'>{'->'}</div>
+            <div className='mr-1'>{coreTokenAmount}</div>
+            <TagNetworkToken explorer={to.network.explorer} token={{ symbol: coreSymbol }} className={CancelledStatus.includes(status) && 'text-black'}/>
+          </div>
+        }
+      </ListRow>
+      {
+        !FailedStatus.includes(status) &&
+        <ListRow title='Fee'>
+          <div className='flex items-center'>
+            <div className='mr-1'>{ethers.utils.formatUnits(srFee + lpFee + swap.amountToShare.toNumber(), 6)}</div>
+            <TagNetworkToken explorer={feeSide.network.explorer} token={feeSide.token} />
+          </div>
+          <div className={classnames('text-sm text-gray-500', srFee + lpFee + swap.amountToShare.toNumber() > 0 ? '' : 'hidden')}>
+          {
+            hideSharingFee && swap.amountToShare.gt(0)
+            ? `${ethers.utils.formatUnits(srFee, 6)} Service fee + ${ethers.utils.formatUnits(lpFee, 6)} LP fee + ${ethers.utils.formatUnits(swap.amountToShare.toNumber(), 6)} Share fee`
+            : `${ethers.utils.formatUnits(srFee, 6)} Service fee + ${ethers.utils.formatUnits(lpFee + swap.amountToShare.toNumber(), 6)} LP fee`
+          }
+          </div>
+        </ListRow>
+      }
+    </>
   )
 }
 
