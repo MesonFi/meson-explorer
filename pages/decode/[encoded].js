@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 
 import { presets } from 'lib/swap'
 import Card, { CardTitle, CardBody } from 'components/Card'
+import LoadingScreen from 'components/LoadingScreen'
 import SwapStatusBadge from 'components/SwapStatusBadge'
 import ListRow from 'components/ListRow'
 import TagNetwork from 'components/TagNetwork'
@@ -12,6 +13,19 @@ import { EncodedSplitted, SwapSaltBadges, SwapAmountAndFeeDisplay } from '../swa
 
 export default function DecodeSwap() {
   const router = useRouter()
+  if (!router.query.encoded) {
+    return (
+      <Card>
+        <CardTitle
+          title='Swap Decoder'
+          subtitle={router.query.encoded}
+        />
+        <CardBody border={false}>
+          <LoadingScreen />
+        </CardBody>
+      </Card>
+    )
+  }
   try {
     const { swap, from, to } = presets.parseInOutNetworkTokens(router.query.encoded)
     return (
