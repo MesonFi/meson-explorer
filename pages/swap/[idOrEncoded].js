@@ -372,7 +372,7 @@ export function SwapAmountAndFeeDisplay({ status, from, to, swap, srFee = swap.s
     inAmount = ethers.utils.formatUnits(swap.amount.add(swap.fee), swap._isUCT() ? 4 : 6)
     outAmount = ethers.utils.formatUnits(swap.amount, 6)
   }
-  const feeSide = (swap.deprecatedEncoding || to.token.fake || outAmount == 0) ? from : to
+  const feeSide = (swap.deprecatedEncoding || outAmount == 0) ? from : to
 
   return (
     <>
@@ -388,7 +388,7 @@ export function SwapAmountAndFeeDisplay({ status, from, to, swap, srFee = swap.s
             <TagNetworkToken explorer={from.network.explorer} token={from.token} className={CancelledStatus.includes(status) && 'text-black'}/>
             <div className='text-sm text-gray-500 mx-1'>{'->'}</div>
             <div className='mr-1'>{outAmount}</div>
-            {!to.token.fake && outAmount != 0 && <TagNetworkToken explorer={to.network.explorer} token={to.token} className={CancelledStatus.includes(status) && 'text-black'} />}
+            {outAmount != 0 && <TagNetworkToken explorer={to.network.explorer} token={to.token} className={CancelledStatus.includes(status) && 'text-black'} />}
           </div>
         }
         {
