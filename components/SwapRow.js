@@ -88,7 +88,7 @@ export default function SwapRow({ data: raw, smMargin }) {
   const coreSymbol = presets.getCoreSymbol(to.network.id)
   const totalFee = swap.amountToShare.add((raw.srFee || 0) + (raw.lpFee || 0)).toNumber()
   const outAmount = ethers.utils.formatUnits(swap.amount.sub(swap.amountForCoreToken).sub(totalFee), 6)
-  const feeSide = (swap.deprecatedEncoding || to.token.fake || outAmount == 0) ? from : to
+  const feeSide = (swap.deprecatedEncoding || outAmount == 0) ? from : to
 
   return (
     <tr
@@ -169,7 +169,7 @@ export default function SwapRow({ data: raw, smMargin }) {
             <div className='hidden md:flex'>
               <div className='text-gray-500 mx-1 text-xs'>{'->'}</div>
               {
-                !to.token.fake && outAmount > 0 &&
+                outAmount > 0 &&
                 <TagNetworkToken
                   responsive
                   iconOnly={swap.swapForCoreToken}
@@ -181,14 +181,14 @@ export default function SwapRow({ data: raw, smMargin }) {
                 <TagNetworkToken
                   className='ml-0.5'
                   responsive
-                  iconOnly={!to.token.fake && outAmount > 0}
+                  iconOnly={outAmount > 0}
                   explorer={to.network.explorer}
                   token={{ symbol: coreSymbol }}
                 />
               }
             </div>
             {
-              swap.swapForCoreToken && !to.token.fake && outAmount > 0 &&
+              swap.swapForCoreToken && outAmount > 0 &&
               <div className='flex md:hidden text-gray-500 ml-1.5 text-xs'>
                 +🔥
               </div>
