@@ -12,6 +12,7 @@ import usdc from './usdc.png'
 import usdt from './usdt.png'
 import busd from './busd.png'
 import cusd from './cusd.png'
+import iusd from './iusd.jpg'
 import tomo_cusd from './tomo_cusd.png'
 import dai from './dai.png'
 import pod from './pod.png'
@@ -41,6 +42,8 @@ function getTokenIcon(symbol) {
     return cusd
   } else if (symbol.indexOf('CUSD') > -1) {
     return tomo_cusd
+  } else if (symbol.indexOf('iUSD') > -1) {
+    return iusd
   } else if (symbol.indexOf('USD') > -1 || symbol.indexOf('STABLECOINS') > -1) {
     return { component: <div className='w-full h-full rounded-full bg-primary flex items-center justify-center text-xs font-light text-white'>$</div> }
   } else if (symbol.indexOf('PoD') > -1) {
@@ -65,6 +68,9 @@ export default function TagNetworkToken ({ responsive, size = 'sm', explorer, to
     return null
   }
   const icon = getTokenIcon(token.symbol)
+  if (!icon) {
+    return null
+  }
   const tokenLink = getExplorerTokenLink(token)
   const href = explorer && `${explorer}/${tokenLink}`
   return (

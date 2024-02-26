@@ -104,7 +104,7 @@ export function LpContent ({ address, addressByNetwork, dealer, withSrFee = true
     }
   }, [address, addressByNetwork, withSrFee, checkDifference, dealer, noColor, add])
 
-  const tokens = ['eth', 'btc', 'bnb', 'stablecoins']
+  const tokens = ['eth', 'btc', 'bnb', 'stablecoins', '1']
 
   return (
     <dl className={!address && (checkDifference ? 'min-w-[600px]' : 'min-w-[440px]')}>
