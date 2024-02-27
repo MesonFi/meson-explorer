@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 import { Swaps, SwapFails } from 'lib/db'
-import { restartService } from '../admin/restart'
+import { restartService } from '../admin/server/restart'
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {

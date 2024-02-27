@@ -9,7 +9,7 @@ const getApiAccessRoles = pathname => {
   ) {
     return ['root']
   } else if (
-    pathname.startsWith('/api/v1/admin/restart')
+    pathname.startsWith('/api/v1/admin/server/restart')
   ) {
     return ['root', 'admin', 'operator']
   } else if (

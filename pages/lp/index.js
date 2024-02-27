@@ -26,12 +26,12 @@ export default function LpPage() {
   }
 
   const restartLp = async () => {
-    await fetcher.post(`admin/restart`, { service: 'lp' })
+    await fetcher.post(`admin/server/restart`, { service: 'lp' })
     window.alert('LP service restarted!')
   }
 
   const restartRelayer = async () => {
-    await fetcher.post(`admin/restart`, { service: 'relayer' })
+    await fetcher.post(`admin/server/restart`, { service: 'relayer' })
     window.alert('Relayer restarted! LP service will restart after 20 seconds.')
     setTimeout(restartLp, 20000)
   }
