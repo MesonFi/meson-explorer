@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { SearchIcon } from '@heroicons/react/outline'
 
+import useSWR from 'swr'
 import fetcher from 'lib/fetcher'
 
 import PagiCard from 'components/Pagi/PagiCard'
@@ -29,6 +30,19 @@ export default function SwapList() {
     { key: 'meson-to', name: 'meson.to', active: category === 'meson.to', onClick: () => router.push({ query: { category: 'meson.to', ...rest } }) },
     { key: 'campaign', name: 'Campaign', active: category === 'campaign', onClick: () => router.push({ query: { category: 'campaign', ...rest } }) },
   ]
+
+  const { data: autoData, mutate } = useSWR(authorized && category === 'auto' && 'admin/server/auto', fetcher)
+  const toggleCollect = React.useCallback(async () => {
+    if (!autoData) {
+      return
+    }
+    if (autoData.COLLECT) {
+      await fetcher.delete('admin/server/auto')
+    } else {
+      await fetcher.post('admin/server/auto')
+    }
+    mutate()
+  }, [autoData, mutate])
 
   const toggleFailed = React.useCallback(() => {
     const query = router.query
@@ -91,6 +105,7 @@ export default function SwapList() {
       <PagiCard
         title='Latest Swaps'
         badge={authorized && <Button size='sm' rounded color={rest.failed && 'error'} onClick={toggleFailed}>Failed</Button>}
+        right={autoData && <Button rounded size='sm' color={autoData.COLLECT ? 'info' : ''} onClick={toggleCollect}>Collect {autoData.COLLECT ? 'On' : 'Off'}</Button>}
         tabs={tabs}
         queryUrl={queryUrl}
         fallback='/'
