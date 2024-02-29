@@ -37,6 +37,8 @@ function getTokenIcon(symbol) {
     return usdt
   } else if (symbol.indexOf('BUSD') > -1) {
     return busd
+  } else if (symbol.indexOf('DAI') > -1) {
+    return dai
   } else if (symbol.indexOf('USDB') > -1) {
     return usdb
   } else if (symbol.indexOf('cUSD') > -1) {
