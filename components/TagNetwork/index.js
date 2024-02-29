@@ -13,6 +13,7 @@ import b2 from './b2.png'
 import base from './base.png'
 import beam from './beam.png'
 import bevm from './bevm.png'
+import blast from './blast.png'
 import bnb from './bnb.png'
 import celo from './celo.png'
 import cfx from './cfx.png'
@@ -55,7 +56,7 @@ import zksync from './zksync.png'
 
 const icons = {
   ancient8, aptos, arb, aurora, avax,
-  b2, base, beam, bevm, bnb,
+  b2, base, beam, bevm, blast, bnb,
   celo, cfx, core, cronos,
   eos, eth, goerli: eth, evmos,
   ftm, gnosis, goshen, kava, linea,
