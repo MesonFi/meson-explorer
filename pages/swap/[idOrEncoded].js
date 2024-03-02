@@ -542,7 +542,7 @@ export function SwapSaltBadges({ swap }) {
     badges.push('meson.to')
     badges.push('alls.to')
   }
-  if (['f'].includes(swap.salt[4])) {
+  if (parseInt(swap.salt[4], 16) >= 8) {
     badges.push('Event Qulified')
   }
   return (
