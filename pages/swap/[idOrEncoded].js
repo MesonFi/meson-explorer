@@ -46,6 +46,8 @@ const StatusDesc = {
   UNLOCKED: `Swap didn't finish within valid time. Fund can be withdrawn after expire time.`
 }
 
+const fmt = Intl.NumberFormat('en')
+
 export default function SwapDetail() {
   const router = useRouter()
   const idOrEncoded = router.query.idOrEncoded
@@ -284,13 +286,21 @@ export function EncodedSplitted({ swap }) {
           <span className='group inline-block relative cursor-pointer hover:underline'>
             {encoded.substring(18, splitPos)}
             <span className='hidden group-hover:block absolute bottom-6 bg-white border rounded-lg px-2 py-1'>
-              {parseInt('0x' + encoded.substring(18, splitPos))}
+            {
+              swap._newFormat && swap.swapForCoreToken
+              ? <div><div className='text-sm text-gray-500'>Core token price</div><div>${fmt.format(swap.coreTokenPrice)}</div></div>
+              : parseInt('0x' + encoded.substring(18, splitPos))
+            }
             </span>
           </span>
           <span className='group inline-block relative cursor-pointer hover:underline'>
             {encoded.substring(splitPos, 26)}
             <span className='hidden group-hover:block absolute bottom-6 bg-white border rounded-lg px-2 py-1'>
-              {parseInt('0x' + encoded.substring(splitPos, 26))}
+            {
+              swap._newFormat && swap.swapForCoreToken
+              ? <div><div className='text-sm text-gray-500'>Swap for core amount</div><div>{fmt.format(ethers.utils.formatUnits(swap.amountForCoreToken, 6))}</div></div>
+              : parseInt('0x' + encoded.substring(splitPos, 26))
+            }
             </span>
           </span>
           <span className='text-gray-500'>{encoded.substring(26, 34)}</span>
