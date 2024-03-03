@@ -465,7 +465,6 @@ function SwapActionButton({ role, data, swap, status }) {
   const btnDirectExecute = role && <Button size='sm' color='info' rounded onClick={() => extensions.directExecute(swap, data.releaseSignature, initiator, recipient)}>DirectExecute</Button>
   const btnRelease = role && <Button size='sm' color='info' rounded onClick={() => extensions.release(swap, data.releaseSignature, initiator, recipient)}>Release</Button>
   const btnDirectRelease = role && <Button size='sm' color='info' rounded onClick={() => extensions.directRelease(swap, data.releaseSignature, initiator, recipient)}>DirectRelease</Button>
-  const btnSimpleRelease = role === 'root' && <Button size='sm' color='info' rounded onClick={() => extensions.simpleRelease(swap, initiator, recipient)}>SimpleRelease</Button>
   const btnTransfer = role === 'root' && <Button size='sm' color='info' rounded onClick={() => extensions.transfer(swap, initiator, recipient)}>Transfer</Button>
   const btnWithdraw = <Button size='sm' color='info' rounded onClick={() => extensions.withdraw(swap)}>Withdraw</Button>
   const btnWithdrawTo = role === 'root' && <Button size='sm' color='info' rounded onClick={() => extensions.withdrawTo(swap, posted.signer)}>Withdraw To {abbreviate(posted?.signer, 4, 0)}</Button>
@@ -490,11 +489,11 @@ function SwapActionButton({ role, data, swap, status }) {
       break;
     case 'EXPIRED':
       if (data.releaseSignature) {
-        actionButton = <>{btnExecute}{btnSimpleRelease}</>
+        actionButton = <>{btnExecute}{btnDirectRelease}</>
       } else if (!data.fromContract) {
         actionButton = btnWithdraw
       } else if (posted?.signer) {
-        actionButton = <>{btnWithdrawTo}{btnSimpleRelease}</>
+        actionButton = <>{btnWithdrawTo}{btnDirectRelease}</>
       }
       break;
     case 'RELEASING':
@@ -507,12 +506,12 @@ function SwapActionButton({ role, data, swap, status }) {
     case 'RELEASING...':
       if (unlocks >= locks) {
         if (!directSwap) {
-          actionButton = <>{btnManualWithdraw}{btnSimpleRelease}</>
+          actionButton = <>{btnManualWithdraw}{btnDirectRelease}</>
         } else if (role === 'root') {
           if (swap.inToken === 32) {
             actionButton = btnTransfer
           } else {
-            actionButton = <>{btnManualWithdraw}{swap.expired ? btnSimpleRelease : btnDirectRelease}</>
+            actionButton = <>{btnManualWithdraw}{btnDirectRelease}</>
           }
         }
         break
