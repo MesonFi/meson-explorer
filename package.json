@@ -13,7 +13,7 @@
     "@mesonfi/contract-abis": "^1.16.0",
     "@mesonfi/dealer": "^0.15.3",
     "@mesonfi/extensions": "^0.14.0",
-    "@mesonfi/presets": "^1.17.0",
+    "@mesonfi/presets": "^1.17.1",
     "@mesonfi/sdk": "^1.17.0",
     "@mesonfi/web3-jwt": "^0.6.0",
     "@next-auth/mongodb-adapter": "^1.0.3",
