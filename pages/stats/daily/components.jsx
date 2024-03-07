@@ -67,9 +67,9 @@ export function valueInStr (value = 0, symbol, k = false) {
   }
   const amount = Math.floor(ethers.utils.formatUnits(value, 6))
   if (amount > 5e5) {
-    return <><span className='text-gray-500 mr-1'>$</span>{fmt.format(amount).padStart(10, String.fromCharCode(160))}</>
+    return <><span className='text-gray-500 mr-0.5'>$</span>{fmt.format(amount).padStart(10, String.fromCharCode(160))}</>
   }
-  return <><span className='text-gray-500 mr-1'>$</span>{fmt.format(amount).padStart(7, String.fromCharCode(160))}</>
+  return <><span className='text-gray-500 mr-0.5'>$</span>{fmt.format(amount).padStart(7, String.fromCharCode(160))}</>
 }
 
 function SwapCount({ count, success }) {
