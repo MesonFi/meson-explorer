@@ -78,5 +78,5 @@ function SwapCount({ count, success }) {
   }
   const countStr = (count > 100000 ? Math.floor(count / 1000) + 'k' : `${count}`).padStart(5, String.fromCharCode(160))
   const successStr = (success > 100000 ? Math.floor(success / 1000) + 'k' : `${success}`).padStart(5, String.fromCharCode(160))
-  return <span>{successStr}<span className='text-gray-500 ml-1 mr-0.5'>/</span>{countStr} <span className='text-gray-500'>({Math.floor(success / count * 1000) / 10}%)</span></span>
+  return <span>{successStr}<span className='text-gray-500 ml-1 mr-0.5'>/</span>{countStr} <span className='text-gray-500 text-[10px]'>({Math.floor(success / count * 1000) / 10}%)</span></span>
 }
