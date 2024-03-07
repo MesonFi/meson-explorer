@@ -97,19 +97,19 @@ export default function MonthlyStats() {
         size='lg'
         headers={[
           { name: 'Month', width: '5%' },
-          { name: '#Swaps', width: '8%', size: 'xs',className: 'text-right' },
+          { name: '#Swaps', width: '8%', size: 'xs', className: 'text-right' },
           { name: '#API', width: '4%', size: 'xs', className: 'text-right' },
           { name: '#Auto', width: '4%', size: 'xs', className: 'text-right' },
           { name: '#M2', width: '4%', size: 'xs', className: 'text-right' },
-          { name: 'USD Vol', width: '12%', size: 'xs',className: 'text-right' },
-          { name: 'USD Fee', width: '6%', size: 'xs',className: 'text-right' },
-          { name: 'BTC Vol', width: '10%', size: 'xs',className: 'text-right' },
-          { name: 'BTC Fee', width: '6%', size: 'xs',className: 'text-right' },
-          { name: 'ETH Vol', width: '10%', size: 'xs',className: 'text-right' },
-          { name: 'ETH Fee', width: '6%', size: 'xs',className: 'text-right' },
-          { name: 'BNB Vol', width: '10%', size: 'xs',className: 'text-right' },
-          { name: 'BNB Fee', width: '6%', size: 'xs',className: 'text-right' },
-          { name: 'Addrs', width: '9%', size: 'xs',className: 'pr-4 sm:pr-6 text-right' },
+          { name: 'USD Vol', width: '12%', size: 'xs', className: 'text-right' },
+          { name: 'USD Fee', width: '6%', size: 'xs', className: 'text-right' },
+          { name: 'BTC Vol', width: '10%', size: 'xs', className: 'text-right' },
+          { name: 'BTC Fee', width: '6%', size: 'xs', className: 'text-right' },
+          { name: 'ETH Vol', width: '10%', size: 'xs', className: 'text-right' },
+          { name: 'ETH Fee', width: '6%', size: 'xs', className: 'text-right' },
+          { name: 'BNB Vol', width: '10%', size: 'xs', className: 'text-right' },
+          { name: 'BNB Fee', width: '6%', size: 'xs', className: 'text-right' },
+          { name: 'Addrs', width: '9%', size: 'xs', className: 'pr-4 sm:pr-6 text-right' },
         ]}
       >
         <StatTableRow data={total} />

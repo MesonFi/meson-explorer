@@ -37,45 +37,46 @@ export function StatTableRow({ data, token }) {
   return (
     <tr className='odd:bg-white even:bg-gray-50 hover:bg-primary-50'>
       <Td size='' className='pl-4 pr-3 sm:pl-6 py-1 text-sm'>{date}</Td>
-      <Td size='sm'><SwapCount count={count} success={success} /></Td>
-      <Td size='sm'><SwapCount {...api} /></Td>
-      <Td size='sm'><SwapCount {...auto} /></Td>
-      <Td size='sm'><SwapCount {...m2} /></Td>
+      <Td size='xs' className='font-mono'><SwapCount count={count} success={success} /></Td>
+      <Td size='xs' className='font-mono'><SwapCount {...api} /></Td>
+      <Td size='xs' className='font-mono'><SwapCount {...auto} /></Td>
+      <Td size='xs' className='font-mono'><SwapCount {...m2} /></Td>
       {/* <Td size='sm'><SwapCount {...a2} /></Td> */}
-      <Td size='sm'>{addresses}</Td>
+      <Td size='xs' className='font-mono text-right'>{addresses}</Td>
       {
         token &&
         <>
-          <Td size='sm'>{volumeStr}</Td>
-          <Td size='sm'>{srFeeStr} <span className='text-gray-500'>|</span> {lpFeeStr}</Td>
-          <Td size='sm'>{avgSwapAmount}</Td>
+          <Td size='xs' className='font-mono text-right'>{volumeStr}</Td>
+          <Td size='xs' className='font-mono text-right'>{srFeeStr}</Td>
+          <Td size='xs' className='font-mono text-right'>{lpFeeStr}</Td>
+          <Td size='xs' className='font-mono text-right'>{avgSwapAmount}</Td>
         </>
       }
-      <Td size='sm'>{formatDuration(duration * 1000)}</Td>
+      <Td size='xs' className='pr-4 sm:pr-6 font-mono text-right'>{formatDuration(duration * 1000)}</Td>
     </tr>
   )
 }
 
 export function valueInStr (value = 0, symbol, k = false) {
   if (symbol === 'eth') {
-    return `${fmt.format(ethers.utils.formatUnits(value, 6))}🔹`
+    return `${Number(ethers.utils.formatUnits(value, 6)).toFixed(3)}🔹`
   } else if (symbol === 'btc') {
-    return <div className='inline-flex items-center'>{fmt.format(ethers.utils.formatUnits(value, 6))}<span className='text-[80%] ml-0.5'>🫓</span></div>
+    return <div className='inline-flex items-center'>{Number(ethers.utils.formatUnits(value, 6)).toFixed(3)}<span className='text-[80%] ml-0.5'>🫓</span></div>
   } else if (symbol === 'bnb') {
-    return `${fmt.format(ethers.utils.formatUnits(value, 6))}🔸`
+    return `${Number(ethers.utils.formatUnits(value, 6)).toFixed(3)}🔸`
   }
   const amount = Math.floor(ethers.utils.formatUnits(value, 6))
-  if (k && amount > 10000) {
-    return `$${Math.floor(amount / 1000)}k`
+  if (amount > 5e5) {
+    return <><span className='text-gray-500 mr-1'>$</span>{fmt.format(amount).padStart(10, String.fromCharCode(160))}</>
   }
-  return `$${fmt.format(amount)}`
+  return <><span className='text-gray-500 mr-1'>$</span>{fmt.format(amount).padStart(7, String.fromCharCode(160))}</>
 }
 
 function SwapCount({ count, success }) {
   if (!count) {
     return null
   }
-  const countStr = count > 100000 ? Math.floor(count / 1000) + 'k' : count
-  const successStr = success > 100000 ? Math.floor(success / 1000) + 'k' : success
-  return <>{successStr} <span className='text-gray-500'>/</span> {countStr} <span className='text-gray-500 text-sm'>({Math.floor(success / count * 1000) / 10}%)</span></>
+  const countStr = (count > 100000 ? Math.floor(count / 1000) + 'k' : `${count}`).padStart(5, String.fromCharCode(160))
+  const successStr = (success > 100000 ? Math.floor(success / 1000) + 'k' : `${success}`).padStart(5, String.fromCharCode(160))
+  return <span>{successStr}<span className='text-gray-500 ml-1 mr-0.5'>/</span>{countStr} <span className='text-gray-500'>({Math.floor(success / count * 1000) / 10}%)</span></span>
 }

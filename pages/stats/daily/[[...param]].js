@@ -128,18 +128,19 @@ export default function DailyStats() {
         noSize
         tableHeaders={[
           { name: 'Date', width: '10%' },
-          { name: '# success / total', width: '15%' },
-          { name: '# API swaps', width: '10%' },
-          { name: '# Auto swaps', width: '10%' },
-          { name: '# meson.to swaps', width: '10%' },
+          { name: '# success / total', size: 'xs', width: '15%' },
+          { name: '# API swaps', size: 'xs', width: '10%' },
+          { name: '# Auto swaps', size: 'xs', width: '10%' },
+          { name: '# meson.to swaps', size: 'xs', width: '10%' },
           // { name: '# alls.to swaps', width: '10%' },
-          { name: 'Addrs', width: '8%' },
+          { name: 'Addrs', width: '5%', size: 'xs', className: 'text-right' },
           ...(token && [
-            { name: 'Volume', width: '12%' },
-            { name: 'Service | LP Fee', width: '10%' },
-            { name: 'Avg. Amount', width: '8%' },
+            { name: 'Volume', width: '8%', size: 'xs', className: 'text-right' },
+            { name: 'Sr Fee', width: '6%', size: 'xs', className: 'text-right' },
+            { name: 'LP Fee', width: '6%', size: 'xs', className: 'text-right' },
+            { name: 'Avg. Amount', width: '6%', size: 'xs', className: 'text-right' },
           ]),
-          { name: 'Avg. Dur.', width: '7%' }
+          { name: 'Avg. Dur.', width: '7%', size: 'xs', className: 'pr-4 sm:pr-6 text-right' }
         ]}
         Row={StatTableRowByToken}
       />
