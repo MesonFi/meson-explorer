@@ -13,8 +13,10 @@ import b2 from './b2.png'
 import base from './base.png'
 import beam from './beam.png'
 import bevm from './bevm.png'
+import bitlayer from './bitlayer.png'
 import blast from './blast.png'
 import bnb from './bnb.png'
+import bob from './bob.png'
 import celo from './celo.png'
 import cfx from './cfx.png'
 import core from './core.png'
@@ -25,6 +27,7 @@ import evmos from './evmos.png'
 import ftm from './ftm.png'
 import gnosis from './gnosis.png'
 import goshen from './goshen.png'
+import inevm from './inevm.png'
 import kava from './kava.png'
 import linea from './linea.png'
 import manta from './manta.png'
@@ -52,19 +55,20 @@ import x1 from './x1.png'
 import zeta from './zeta.png'
 import zkevm from './zkevm.png'
 import zkfair from './zkfair.png'
+import zklink from './zklink.png'
 import zksync from './zksync.png'
 
 const icons = {
   ancient8, aptos, arb, aurora, avax,
-  b2, base, beam, bevm, blast, bnb,
+  b2, base, beam, bevm, bitlayer, blast, bnb, bob,
   celo, cfx, core, cronos,
   eos, eth, goerli: eth, evmos,
-  ftm, gnosis, goshen, kava, linea,
+  ftm, gnosis, goshen, inevm, kava, linea,
   manta, map, merlin, metis, mnt, mode, movr, naut,
   one, opbnb: bnb, opt, polygon,
   scroll, sepolia, 'skale-europa': skaleEuropa, 'skale-nebula': skaleNebula, solana, starknet, sui,
   taiko, tron, viction,
-  x1, zeta, zkevm, zkfair, zksync
+  x1, zeta, zkevm, zkfair, zklink, zksync
 }
 
 export default function TagNetwork ({ responsive, size = 'sm', network, iconOnly, address, className }) {

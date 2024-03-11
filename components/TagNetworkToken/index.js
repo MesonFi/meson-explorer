@@ -17,6 +17,7 @@ import usdb from './usdb.png'
 import cusd from './cusd.png'
 import iusd from './iusd.png'
 import tomo_cusd from './tomo_cusd.png'
+import fdusd from './fdusd.png'
 import pod from './pod.png'
 import uct from './uct.png'
 import zbc from './zbc.png'
@@ -44,6 +45,8 @@ function getTokenIcon(symbol) {
     return dai
   } else if (symbol.indexOf('USDB') > -1) {
     return usdb
+  } else if (symbol.indexOf('FDUSD') > -1) {
+    return fdusd
   } else if (symbol.indexOf('cUSD') > -1) {
     return cusd
   } else if (symbol.indexOf('CUSD') > -1) {
