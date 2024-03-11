@@ -188,7 +188,7 @@ function LpContentRow ({ address, withSrFee, checkDifference, dealer, network, n
       }
       if ([
         'naut', 'bevm', 'zkfair', 'map', 'ancient8', 'zeta', 'merlin',
-        'viction-testnet', 'taiko-testnet', 'b2-testnet', 'merlin-testnet', 'goshen-testnet'
+        'viction-testnet', 'taiko-testnet', 'b2-testnet', 'merlin-testnet', 'goshen-testnet', 'bob-sepolia', 'bitlayer-testnet'
       ].includes(network.id)) {
         // TODO
         return { mesonClient }
