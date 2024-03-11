@@ -2,7 +2,7 @@ import classnames from 'classnames'
 
 import { Loading } from 'components/LoadingScreen'
 
-export default function NumberDisplay ({ value, symbol = '', decimals = 6, length = 6, className }) {
+export default function NumberDisplay ({ value, symbol = '', decimals = 6, length = 7, className }) {
   const width = (length + decimals + (decimals && 1)) * 8.5
 
   if (!value) {
