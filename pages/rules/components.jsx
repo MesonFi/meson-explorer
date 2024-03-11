@@ -28,10 +28,11 @@ const tokens = [
   { id: 'USDC', name: 'USDC', icon: <TagNetworkToken iconOnly size='md' token={{ symbol: 'USDC' }} /> },
   { id: 'USDT', name: 'USDT', icon: <TagNetworkToken iconOnly size='md' token={{ symbol: 'USDT' }} /> },
   { id: 'BUSD', name: 'BUSD', icon: <TagNetworkToken iconOnly size='md' token={{ symbol: 'BUSD' }} /> },
+  { id: 'USDB', name: 'USDB', icon: <TagNetworkToken iconOnly size='md' token={{ symbol: 'USDB' }} /> },
+  { id: 'FDUSD', name: 'FDUSD', icon: <TagNetworkToken iconOnly size='md' token={{ symbol: 'FDUSD' }} /> },
   { id: 'DAI', name: 'DAI', icon: <TagNetworkToken iconOnly size='md' token={{ symbol: 'DAI' }} /> },
   { id: 'cUSD', name: 'cUSD', icon: <TagNetworkToken iconOnly size='md' token={{ symbol: 'cUSD' }} /> },
   { id: 'PoD', name: 'PoD', icon: <TagNetworkToken iconOnly size='md' token={{ symbol: 'PoD' }} /> },
-  { id: 'UCT', name: 'UCT', icon: <TagNetworkToken iconOnly size='md' token={{ symbol: 'UCT' }} /> }
 ]
 
 export function SwapRuleModal ({ hides, type, data, onClose }) {
