@@ -510,6 +510,8 @@ function SwapActionButton({ role, data, swap, status }) {
         } else if (role === 'root') {
           if (swap.inToken === 32) {
             actionButton = btnTransfer
+          } else if (posted?.tokenFrom) {
+            actionButton = <>{btnWithdrawTo}{btnDirectRelease}</>
           } else {
             actionButton = <>{btnManualWithdraw}{btnDirectRelease}</>
           }
