@@ -3,7 +3,7 @@ import { SWAP_RES_FIELDS } from 'lib/const'
 
 export default async function handler(req, res) {
   const address = req.query.address
-  const since = Date.now() - 7200_000
+  const since = Date.now() - 3600_000 * 6
   const query = {
     'fromTo.0': address,
     $or: [
