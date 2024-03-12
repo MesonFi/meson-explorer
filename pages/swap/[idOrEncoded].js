@@ -468,7 +468,7 @@ function SwapActionButton({ role, data, swap, status }) {
   const btnTransfer = role === 'root' && <Button size='sm' color='info' rounded onClick={() => extensions.transfer(swap, initiator, recipient)}>Transfer</Button>
   const btnWithdraw = <Button size='sm' color='info' rounded onClick={() => extensions.withdraw(swap)}>Withdraw</Button>
   const btnWithdrawTo = role === 'root' && <Button size='sm' color='info' rounded onClick={() => extensions.withdrawTo(swap, posted.tokenFrom)}>Withdraw To {abbreviate(posted?.tokenFrom, 4, 0)}</Button>
-  const btnManualWithdraw = role === 'root' && <Button size='sm' color='info' rounded onClick={() => extensions.manualWithdraw(swap, initiator, posted.tokenFrom || data.fromTo[0])}>ManualWithdraw</Button>
+  const btnManualWithdraw = role === 'root' && <Button size='sm' color='info' rounded onClick={() => extensions.manualWithdraw(swap, initiator, posted?.tokenFrom || data.fromTo[0])}>ManualWithdraw</Button>
 
   let actionButton = null
   switch (status) {
