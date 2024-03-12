@@ -467,7 +467,7 @@ function SwapActionButton({ role, data, swap, status }) {
   const btnDirectRelease = role && <Button size='sm' color='info' rounded onClick={() => extensions.directRelease(swap, data.releaseSignature, initiator, recipient)}>DirectRelease</Button>
   const btnTransfer = role === 'root' && <Button size='sm' color='info' rounded onClick={() => extensions.transfer(swap, initiator, recipient)}>Transfer</Button>
   const btnWithdraw = <Button size='sm' color='info' rounded onClick={() => extensions.withdraw(swap)}>Withdraw</Button>
-  const btnWithdrawTo = role === 'root' && <Button size='sm' color='info' rounded onClick={() => extensions.withdrawTo(swap, posted.signer)}>Withdraw To {abbreviate(posted?.signer, 4, 0)}</Button>
+  const btnWithdrawTo = role === 'root' && <Button size='sm' color='info' rounded onClick={() => extensions.withdrawTo(swap, posted.tokenFrom)}>Withdraw To {abbreviate(posted?.tokenFrom, 4, 0)}</Button>
   const btnManualWithdraw = role === 'root' && <Button size='sm' color='info' rounded onClick={() => extensions.manualWithdraw(swap, initiator, data.fromTo[0])}>ManualWithdraw</Button>
 
   let actionButton = null
@@ -492,7 +492,7 @@ function SwapActionButton({ role, data, swap, status }) {
         actionButton = <>{btnExecute}{btnDirectRelease}</>
       } else if (!data.fromContract) {
         actionButton = btnWithdraw
-      } else if (posted?.signer) {
+      } else if (posted?.tokenFrom) {
         actionButton = <>{btnWithdrawTo}{btnDirectRelease}</>
       }
       break;

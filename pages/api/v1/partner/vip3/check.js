@@ -18,7 +18,7 @@ export default async function handler(req, res) {
       }
       const status = getStatusFromEvents(swap.events, swap.expireTs)
       const { from, to } = presets.parseInOutNetworkTokens(swap.encoded)
-      const fromAddr = swap.events.find(e => e.name === 'POSTED')?.signer || swap.fromTo[0]
+      const fromAddr = swap.events.find(e => e.name === 'POSTED')?.tokenFrom || swap.fromTo[0]
       let feeUnit = ''
       if (Number(swap.srFee) > 0) {
         feeUnit = presets.getTokenCategory(to.network.id, to.token.tokenIndex)
