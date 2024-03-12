@@ -127,20 +127,20 @@ export default function DailyStats() {
         reducer={reducer}
         noSize
         tableHeaders={[
-          { name: 'Date', width: '10%' },
-          { name: '# success / total', size: 'xs', width: '15%' },
-          { name: '# API swaps', size: 'xs', width: '10%' },
-          { name: '# Auto swaps', size: 'xs', width: '10%' },
-          { name: '# meson.to swaps', size: 'xs', width: '10%' },
+          { name: 'Date', width: '8%' },
+          { name: '# success / total', size: 'xs', width: '11%' },
+          { name: '# API swaps', size: 'xs', width: '11%' },
+          { name: '# Auto swaps', size: 'xs', width: '11%' },
+          { name: '# meson.to swaps', size: 'xs', width: '11%' },
           // { name: '# alls.to swaps', width: '10%' },
-          { name: 'Addrs', width: '5%', size: 'xs', className: 'text-right' },
+          { name: 'Addrs', width: '8%', size: 'xs', className: 'text-right' },
+          { name: 'Avg. Dur.', width: '8%', size: 'xs', className: 'text-right' + (token ? '' : ' pr-4 sm:pr-6') },
           ...(token && [
+            { name: 'Avg. Amount', width: '8%', size: 'xs', className: 'text-right' },
             { name: 'Volume', width: '8%', size: 'xs', className: 'text-right' },
-            { name: 'Sr Fee', width: '6%', size: 'xs', className: 'text-right' },
-            { name: 'LP Fee', width: '6%', size: 'xs', className: 'text-right' },
-            { name: 'Avg. Amount', width: '6%', size: 'xs', className: 'text-right' },
+            { name: 'Sr Fee', width: '8%', size: 'xs', className: 'text-right' },
+            { name: 'LP Fee', width: '8%', size: 'xs', className: 'pr-4 sm:pr-6 text-right' },
           ]),
-          { name: 'Avg. Dur.', width: '7%', size: 'xs', className: 'pr-4 sm:pr-6 text-right' }
         ]}
         Row={StatTableRowByToken}
       />

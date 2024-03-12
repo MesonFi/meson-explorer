@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from 'classnames'
 import useSWR from 'swr'
 import { ethers } from 'ethers'
 
@@ -43,16 +44,16 @@ export function StatTableRow({ data, token }) {
       <Td size='xs' className='font-mono'><SwapCount {...m2} /></Td>
       {/* <Td size='sm'><SwapCount {...a2} /></Td> */}
       <Td size='xs' className='font-mono text-right'>{addresses}</Td>
+      <Td size='xs' className={classnames('font-mono text-right', !token && 'pr-4 sm:pr-6')}>{formatDuration(duration * 1000)}</Td>
       {
         token &&
         <>
+          <Td size='xs' className='font-mono text-right'>{avgSwapAmount}</Td>
           <Td size='xs' className='font-mono text-right'>{volumeStr}</Td>
           <Td size='xs' className='font-mono text-right'>{srFeeStr}</Td>
-          <Td size='xs' className='font-mono text-right'>{lpFeeStr}</Td>
-          <Td size='xs' className='font-mono text-right'>{avgSwapAmount}</Td>
+          <Td size='xs' className='pr-4 sm:pr-6 font-mono text-right'>{lpFeeStr}</Td>
         </>
       }
-      <Td size='xs' className='pr-4 sm:pr-6 font-mono text-right'>{formatDuration(duration * 1000)}</Td>
     </tr>
   )
 }
