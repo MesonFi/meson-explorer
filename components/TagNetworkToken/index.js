@@ -9,6 +9,7 @@ import beth from './beth.png'
 import bnb from '../TagNetwork/bnb.png'
 import sol from '../TagNetwork/solana.png'
 import cfx from '../TagNetwork/cfx.png'
+import inj from '../TagNetwork/inevm.png'
 import usdc from './usdc.png'
 import usdt from './usdt.png'
 import busd from './busd.png'
@@ -65,6 +66,8 @@ function getTokenIcon(symbol) {
     return eos
   } else if (symbol.indexOf('CFX') > -1) {
     return cfx
+  } else if (symbol.indexOf('INJ') > -1) {
+    return inj
   } else if (symbol.indexOf('sFUEL') > -1) {
     return sfuel
   } else {
