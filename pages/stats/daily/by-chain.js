@@ -15,7 +15,7 @@ const networks = getAllNetworks()
 
 export default function DailyStatsByChain() {
   const router = useRouter()
-  const [view, setView] = React.useState('swaps-graph')
+  const [view, setView] = React.useState('volume')
   const { from, to } = router.query
 
   const queryUrl = React.useMemo(() => {
@@ -45,11 +45,11 @@ export default function DailyStatsByChain() {
           size='sm'
           active={view}
           buttons={[
+            { key: 'volume', text: `Volume ` },
             { key: 'swaps-graph', text: `#Swaps (graph)` },
             { key: 'swaps', text: `#Swaps` },
             { key: 'fees-graph', text: `Fees (graph)` },
             { key: 'fees', text: `Fees ` },
-            { key: 'volume', text: `Volume ` },
           ]}
           onChange={view => setView(view)}
         />
