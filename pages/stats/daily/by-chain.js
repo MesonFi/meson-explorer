@@ -113,7 +113,7 @@ function StatByChainRow ({ data, view = 'swaps' }) {
       )
     } else if (view === 'fees') {
       content = (
-        <div className={index ? 'w-12' : 'w-12'}>
+        <div className={index ? 'w-12' : 'w-14'}>
           <StatsByChainFeesTextCell data={d.from} />
           <div className='w-full my-px h-px bg-gray-500' />
           <StatsByChainFeesTextCell data={d.to} />
