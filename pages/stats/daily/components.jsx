@@ -30,9 +30,9 @@ export function GeneralStats() {
 
 export function StatTableRow({ data, token }) {
   const { _id: date, count, success, api, auto, m2, a2, volume = 0, srFee, lpFee, addresses, duration } = data
-  const volumeStr = valueInStr(volume, token)
-  const srFeeStr = valueInStr(srFee, token, true)
-  const lpFeeStr = valueInStr(lpFee, token, true)
+  const volumeStr = valueInStr(volume, token, token === 'usd' && 'long')
+  const srFeeStr = valueInStr(srFee, token)
+  const lpFeeStr = valueInStr(lpFee, token)
   const avgSwapAmount = success ? valueInStr(Math.floor(volume / success), token) : ''
 
   return (
@@ -58,19 +58,33 @@ export function StatTableRow({ data, token }) {
   )
 }
 
-export function valueInStr (value = 0, symbol, k = false) {
+export function valueInStr (value = 0, symbol, width) {
+  let icon
+  let valueStr = Number(ethers.utils.formatUnits(value, 6)).toFixed(3)
   if (symbol === 'eth') {
-    return `${Number(ethers.utils.formatUnits(value, 6)).toFixed(3)}🔹`
+    icon = <span className='-ml-0.5'>🔹</span>
   } else if (symbol === 'btc') {
-    return <div className='inline-flex items-center'>{Number(ethers.utils.formatUnits(value, 6)).toFixed(3)}<span className='text-[80%] ml-0.5'>🫓</span></div>
+    icon = <span className='text-[80%]'>🫓</span>
   } else if (symbol === 'bnb') {
-    return `${Number(ethers.utils.formatUnits(value, 6)).toFixed(3)}🔸`
+    icon = <span className='-ml-0.5'>🔸</span>
+  } else {
+    icon = <span className='text-gray-500 mr-0.5'>$</span>
+    const amount = Math.floor(ethers.utils.formatUnits(value, 6))
+    const length = width === 'short' ? 6 : amount > 5e5 ? 10 : 7
+    valueStr = fmt.format(amount).padStart(length, String.fromCharCode(160))
   }
-  const amount = Math.floor(ethers.utils.formatUnits(value, 6))
-  if (amount > 5e5) {
-    return <><span className='text-gray-500 mr-0.5'>$</span>{fmt.format(amount).padStart(10, String.fromCharCode(160))}</>
+  const widths = {
+    long: 'w-[88px]',
+    short: 'w-full',
   }
-  return <><span className='text-gray-500 mr-0.5'>$</span>{fmt.format(amount).padStart(7, String.fromCharCode(160))}</>
+  return (
+    <div className={classnames('inline-block', widths[width] || 'w-[72px]')}>
+      <div className='flex items-center justify-between'>
+        <div className='w-1.5 h-1.5 flex items-center'>{icon}</div>
+        <span>{valueStr}</span>
+      </div>
+    </div>
+  )
 }
 
 function SwapCount({ count, success }) {

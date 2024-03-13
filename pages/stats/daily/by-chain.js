@@ -113,7 +113,7 @@ function StatByChainRow ({ data, view = 'swaps' }) {
       )
     } else if (view === 'fees') {
       content = (
-        <div className={index ? 'w-10' : 'w-14'}>
+        <div className={index ? 'w-12' : 'w-12'}>
           <StatsByChainFeesTextCell data={d.from} />
           <div className='w-full my-px h-px bg-gray-500' />
           <StatsByChainFeesTextCell data={d.to} />
@@ -129,7 +129,7 @@ function StatByChainRow ({ data, view = 'swaps' }) {
       )
     } else if (view === 'volume') {
       content = (
-        <div className={index ? 'w-12' : 'w-16'}>
+        <div className={index ? 'w-[52px]' : 'w-[72px]'}>
           <StatsByChainVolumeCell data={d.from} />
           <div className='w-full my-0.5 h-px bg-gray-500' />
           <StatsByChainVolumeCell data={d.to} />
@@ -174,11 +174,11 @@ function StatsByChainCountTextCell ({ data = [] }) {
 
 function StatsByChainFeesTextCell ({ data = [] }) {
   return (
-    <div className='w-10 flex flex-col gap-px'>
+    <div className='w-full flex flex-col gap-px'>
     {
       data.map((d, i) => (
-        <div key={i} className={classnames('text-[10px] leading-[10px]', `text-${colors[d.tokenType]}`)}>
-          {valueInStr(d.lpFee + d.srFee, d.tokenType)}
+        <div key={i} className={classnames('font-mono text-[10px] leading-[10px]', `text-${colors[d.tokenType]}`)}>
+          {valueInStr(d.lpFee + d.srFee, d.tokenType, 'short')}
         </div>
       ))
     }
@@ -217,11 +217,11 @@ function StatsByChainFeesLinesCell ({ data = [] }) {
 
 function StatsByChainVolumeCell ({ data = [] }) {
   return (
-    <div className='w-10 flex flex-col gap-px'>
+    <div className='w-full flex flex-col gap-px'>
     {
       data.filter(d => d.volume > 0).map((d, i) => (
-        <div key={i} className={classnames('text-[10px] leading-[10px]', `text-${colors[d.tokenType]}`)}>
-          {valueInStr(d.volume, d.tokenType)}
+        <div key={i} className={classnames('font-mono text-[10px] leading-[10px]', `text-${colors[d.tokenType]}`)}>
+          {valueInStr(d.volume, d.tokenType, 'short')}
         </div>
       ))
     }
