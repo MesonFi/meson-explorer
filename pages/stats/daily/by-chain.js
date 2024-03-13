@@ -220,7 +220,7 @@ function StatsByChainVolumeCell ({ data = [] }) {
     <div className='w-full flex flex-col gap-px'>
     {
       data.filter(d => d.volume > 0).map((d, i) => (
-        <div key={i} className={classnames('font-mono text-[10px] leading-[10px]', `text-${colors[d.tokenType]}`)}>
+        <div key={i} className={classnames('flex font-mono text-[10px] h-[10px]', `text-${colors[d.tokenType]}`)}>
           {valueInStr(d.volume, d.tokenType, 'short')}
         </div>
       ))

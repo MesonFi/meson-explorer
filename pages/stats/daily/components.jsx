@@ -48,10 +48,10 @@ export function StatTableRow({ data, token }) {
       {
         token &&
         <>
-          <Td size='xs' className='font-mono text-right'>{avgSwapAmount}</Td>
-          <Td size='xs' className='font-mono text-right'>{volumeStr}</Td>
-          <Td size='xs' className='font-mono text-right'>{srFeeStr}</Td>
-          <Td size='xs' className='pr-4 sm:pr-6 font-mono text-right'>{lpFeeStr}</Td>
+          <Td size='xs' className='font-mono'><div className='float-right'>{avgSwapAmount}</div></Td>
+          <Td size='xs' className='font-mono'><div className='float-right'>{volumeStr}</div></Td>
+          <Td size='xs' className='font-mono'><div className='float-right'>{srFeeStr}</div></Td>
+          <Td size='xs' className='pr-4 sm:pr-6 font-mono'><div className='float-right'>{lpFeeStr}</div></Td>
         </>
       }
     </tr>
@@ -78,11 +78,9 @@ export function valueInStr (value = 0, symbol, width) {
     short: 'w-full',
   }
   return (
-    <div className={classnames('inline-block', widths[width] || 'w-[72px]')}>
-      <div className='flex items-center justify-between'>
-        <div className='w-1.5 h-1.5 flex items-center'>{icon}</div>
-        <span>{valueStr}</span>
-      </div>
+    <div className={classnames('flex items-center justify-between', widths[width] || 'w-[72px]')}>
+      <div className='w-2 h-2 flex items-center'>{icon}</div>
+      <div className='leading-[10px]'>{valueStr}</div>
     </div>
   )
 }
