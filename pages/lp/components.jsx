@@ -187,14 +187,16 @@ function LpContentRow ({ address, withSrFee, checkDifference, dealer, network, n
         tryAggregate: true,
       }
       if ([
-        'naut', 'bevm', 'zkfair', 'map', 'ancient8', 'zeta', 'merlin',
+        'naut', 'bevm', 'zkfair', 'map', 'ancient8', 'zeta', 'merlin', 'zklink',
         'viction-testnet', 'taiko-testnet', 'b2-testnet', 'merlin-testnet', 'goshen-testnet', 'bob-sepolia', 'bitlayer-testnet'
       ].includes(network.id)) {
         // TODO
         return { mesonClient }
       } else if (network.id.startsWith('cfx')) {
         multicallOption.multicallCustomContractAddress = '0xEFf0078910f638cd81996cc117bccD3eDf2B072F'
-      } else if (!network.id.startsWith('zksync')) {
+      } else if (network.id.startsWith('zklink') || network.id.startsWith('zksync')) {
+        multicallOption.multicallCustomContractAddress = '0xF9cda624FBC7e059355ce98a31693d299FACd963'
+      } else {
         multicallOption.multicallCustomContractAddress = '0xcA11bde05977b3631167028862bE2a173976CA11'
       }
       multicall = new Multicall(multicallOption)
