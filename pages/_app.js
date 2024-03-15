@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from 'classnames'
 import Head from 'next/head'
 import Script from 'next/script'
 import { SessionProvider } from 'next-auth/react'
@@ -26,6 +27,17 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
     }
   }, [router.events])
 
+  const route = router.route
+  const maxWidth = React.useMemo(() => {
+    if (['/stats/daily/by-chain'].includes(route)) {
+      return 'max-w-[2880px]'
+    } else if (['/stats/daily/[[...param]]'].includes(route)) {
+      return 'max-w-[2240px]'
+    } else {
+      return 'max-w-[1920px]'
+    }
+  }, [route])
+
   return (
     <>
       <Head>
@@ -48,10 +60,10 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
         }}
       />
       <SessionProvider session={session}>
-        <Navbar globalState={globalState} setGlobalState={setGlobalState}/>
+        <Navbar className={maxWidth} globalState={globalState} setGlobalState={setGlobalState} />
         <div className='flex-1 overflow-hidden'>
           <div className='h-full overflow-auto'>
-            <div className='mx-auto max-w-[1920px]'>
+            <div className={classnames('mx-auto', maxWidth)}>
               <div className='px-2 py-2 sm:py-4 sm:px-4 lg:py-6 lg:px-8'>
                 <AppContext.Provider value={{ globalState, setGlobalState }}>
                   <Component {...pageProps} />

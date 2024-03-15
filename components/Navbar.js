@@ -20,12 +20,12 @@ const navigation = [
   // { name: 'Swaps', href: '#', current: true },
 ]
 
-export default function Navbar({ globalState, setGlobalState }) {
+export default function Navbar({ className, globalState, setGlobalState }) {
   return (
-    <Disclosure as='nav' className=' bg-gradient-to-r from-gradient-start to-gradient-end'>
+    <Disclosure as='nav' className='bg-gradient-to-r from-gradient-start to-gradient-end'>
       {({ open }) => (
         <>
-          <div className='px-2 mx-auto max-w-[1920px] sm:px-6 lg:px-8'>
+          <div className={classnames('px-2 mx-auto sm:px-6 lg:px-8', className)}>
             <div className='relative flex items-center justify-between h-16'>
               <div className='absolute inset-y-0 left-0 flex items-center sm:hidden'>
                 {/* Mobile menu button*/}
