@@ -1,12 +1,5 @@
 import { Banners } from 'lib/db'
-
-function getBannerQuery (bannerId) {
-  const query = { disabled: { $ne: true } }
-  if (bannerId) {
-    query._id = bannerId
-  }
-  return query
-}
+import { getBannerQuery } from '.'
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
