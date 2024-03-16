@@ -21,7 +21,7 @@ export default function AddressSwapList() {
 
   const { data } = useSWR(checkPremium && `admin/premium/${address}`, fetcher)
   let premiumBadge = null
-  if (data?.total) {
+  if (data?.list) {
     const now = Date.now() / 1000
     const valid = data.list.find(item => item.since < now && now < item.until)
     premiumBadge = <Badge type={valid ? 'warning' : 'default'} className='mr-1' onClick={() => router.push(`/premium/${address}`)}>PREMIUM</Badge>
