@@ -201,7 +201,10 @@ function StatsByChainFeesLinesCell ({ data = [] }) {
       data.map((d, i) => {
         let display = (d.lpFee + d.srFee) / 1e6
         let value
-        if (['eth', 'btc', 'bnb'].includes(d.tokenType)) {
+        if ('btc' === d.tokenType) {
+          value = display * 10000
+          display = display.toFixed(3)
+        } else if (['eth', 'bnb'].includes(d.tokenType)) {
           value = display * 1000
           display = display.toFixed(3)
         } else {
