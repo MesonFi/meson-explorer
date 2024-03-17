@@ -85,8 +85,15 @@ export default listHandler({
         $match: {
           disabled: { $exists: false },
           created: { $gt: startDate, $lt: endDate },
-          inToken: { $ne: 32 },
-          outToken: { $ne: 32 },
+          $or: [
+            {
+              inToken: { $ne: 32 },
+              outToken: { $ne: 32 },
+            },
+            {
+              salt: { $regex : /^0x[d9]/ },
+            },
+          ],
           $nor: [{
             $and: [
               { salt: { $regex : /^0x[d9]/ } },
