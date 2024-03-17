@@ -28,9 +28,7 @@ export default function DailyStatsByChain() {
 
   const headers = React.useMemo(() => {
     const headers = networks.map(n => ({ name: <TagNetwork size='md' network={n} iconOnly /> }))
-    if (['swaps', 'fees', 'volume'].includes(view)) {
-      headers.unshift({ name: 'Total' })
-    }
+    headers.unshift({ name: 'Total' })
     headers.unshift({ name: 'Date' })
     return headers
   }, [view])
@@ -87,9 +85,7 @@ function StatByChainRow ({ data, view = 'swaps' }) {
     }
   })
   const rows = networks.map(n => rest[n.shortSlip44])
-  if (['swaps', 'fees', 'volume'].includes(view)) {
-    rows.unshift(total)
-  }
+  rows.unshift(total)
 
   const tds = rows.map((d, index) => {
     let content = null
@@ -105,7 +101,7 @@ function StatByChainRow ({ data, view = 'swaps' }) {
       )
     } else if (view === 'swaps-graph') {
       content = (
-        <div className='w-10'>
+        <div className={index ? 'w-10' : 'w-14'}>
           <StatsByChainCountLinesCell data={d.from} />
           <div className='w-full my-0.5 h-px bg-gray-500' />
           <StatsByChainCountLinesCell data={d.to} />
@@ -121,7 +117,7 @@ function StatByChainRow ({ data, view = 'swaps' }) {
       )
     } else if (view === 'fees-graph') {
       content = (
-        <div className='w-10'>
+        <div className={index ? 'w-10' : 'w-14'}>
           <StatsByChainFeesLinesCell data={d.from} />
           <div className='w-full my-0.5 h-px bg-gray-500' />
           <StatsByChainFeesLinesCell data={d.to} />
@@ -129,7 +125,7 @@ function StatByChainRow ({ data, view = 'swaps' }) {
       )
     } else if (view === 'volume') {
       content = (
-        <div className={index ? 'w-[52px]' : 'w-[72px]'}>
+        <div className={index ? 'w-[50px]' : 'w-[64px]'}>
           <StatsByChainVolumeCell data={d.from} />
           <div className='w-full my-0.5 h-px bg-gray-500' />
           <StatsByChainVolumeCell data={d.to} />
@@ -188,7 +184,7 @@ function StatsByChainFeesTextCell ({ data = [] }) {
 
 function StatsByChainCountLinesCell ({ data = [] }) {
   return (
-    <div className='w-10 flex flex-col gap-px'>
+    <div className='w-full flex flex-col gap-px'>
       {data.map((d, i) => <Lines key={i} value={d.count} bg={`bg-${colors[d.tokenType]}`} rate={1 - d.success/d.count} />)}
     </div>
   )
@@ -196,7 +192,7 @@ function StatsByChainCountLinesCell ({ data = [] }) {
 
 function StatsByChainFeesLinesCell ({ data = [] }) {
   return (
-    <div className='w-10 flex flex-col gap-px'>
+    <div className='w-full flex flex-col gap-px'>
     {
       data.map((d, i) => {
         let display = (d.lpFee + d.srFee) / 1e6
@@ -242,7 +238,7 @@ function Lines ({ value, display, bg, rate = 0 }) {
 
 function Line ({ value, bg, rate, children }) {
   return (
-    <div className='w-10 overflow-hidden bg-gray-100'>
+    <div className='w-full overflow-hidden bg-gray-100'>
       <div
         className={classnames(
           'relative flex items-center max-w-full',
