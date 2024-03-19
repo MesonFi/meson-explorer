@@ -29,10 +29,13 @@ async function get(req, res) {
   let result = []
   if (bannerId === 'blast-off-to-manta') {
     const swaps = await Swaps.find({
+      created: {
+        $gt: new Date('2024-03-01T00:00:00.000Z'),
+      },
+      'events.name': 'RELEASED',
       inChain: '0x1331',
       outChain: '0x0263',
       inToken: 255, outToken: 254,
-      'events.name': 'RELEASED',
     }).select('fromTo amount')
     
     const balances = {}
