@@ -6,10 +6,12 @@ export default async function handler(req, res) {
   const since = Date.now() - 3600_000 * 6
   const query = {
     'fromTo.0': address,
-    $or: [
-      { updated: { $gt: since } },
-      { 'events.name': { $eq: 'BONDED', $nin: ['RELEASED', 'CANCELLED'] } },
-    ],
+    updated: { $gt: since },
+    'events.name': { $eq: 'BONDED', $nin: ['RELEASED', 'CANCELLED'] },
+    // $or: [
+    //   { updated: { $gt: since } },
+    //   { 'events.name': { $eq: 'BONDED', $nin: ['RELEASED', 'CANCELLED'] } },
+    // ],
     disabled: { $exists: false }
   }
   
