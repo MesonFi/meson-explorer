@@ -28,24 +28,27 @@ async function get(req, res) {
 
   let result = []
   if (bannerId === 'blast-off-to-manta') {
-    const swaps = await Swaps.find({
-      created: {
-        $gt: new Date('2024-03-01T00:00:00.000Z'),
+    const list = await Swaps.aggregate([
+      {
+        $match: {
+          created: {
+            $gt: new Date('2024-03-01T00:00:00.000Z'),
+          },
+          'events.name': 'RELEASED',
+          inChain: '0x1331',
+          outChain: '0x0263',
+          inToken: 255,
+          outToken: 254,
+        }
       },
-      'events.name': 'RELEASED',
-      inChain: '0x1331',
-      outChain: '0x0263',
-      inToken: 255, outToken: 254,
-    }).select('fromTo amount')
-    
-    const balances = {}
-    let total = 0
-    swaps.forEach(s => {
-      const addr = s.fromTo[0]
-      balances[addr] = (balances[addr] || 0) + s.amount
-      total += s.amount
-    })
-    result = Object.entries(balances).map(([addr, amount]) => ({ addr, amount })).filter(x => x.amount >= 100000)
+      {
+        $group: {
+          _id: { $arrayElemAt: ['$fromTo', 0] },
+          amount: { $sum: '$amount' }
+        }
+      }
+    ])
+    result = list.map(({ _id, amount }) => ({ addr: _id, amount })).filter(x => x.amount >= 100000)
   } else if (bannerId === 'zkfair-dragon-slayer') {
     const query = {
       created: {
@@ -72,16 +75,19 @@ async function get(req, res) {
       return
     }
 
-    const swaps = await Swaps.find(query).select('fromTo amount')
+    const list = await Swaps.aggregate([
+      {
+        $match: query
+      },
+      {
+        $group: {
+          _id: { $arrayElemAt: ['$fromTo', 0] },
+          amount: { $sum: '$amount' }
+        }
+      }
+    ])
 
-    const balances = {}
-    let total = 0
-    swaps.forEach(s => {
-      const addr = s.fromTo[0]
-      balances[addr] = (balances[addr] || 0) + s.amount
-      total += s.amount
-    })
-    result = Object.entries(balances).map(([addr, amount]) => ({ addr, amount }))
+    result = list.map(({ _id, amount }) => ({ addr: _id, amount }))
   }
 
   res.json({ result })
