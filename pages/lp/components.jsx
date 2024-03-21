@@ -301,8 +301,8 @@ function TokenAmountRows ({ address, mesonClient, multicall, core, checkDifferen
       await mesonClient.ready({ from: address }).catch(() => {})
       const token = mesonClient._tokens.find(token => Number(token.addr) === 1)
       if (token) {
-        const tokenType = MesonClient.tokenType(token.tokenIndex)
-        add.toBalance(core, tokenType)
+        // const tokenType = MesonClient.tokenType(token.tokenIndex)
+        // add.toBalance(core, tokenType)
         setBalance(v => ({ ...v, [token.tokenIndex]: core }))
       }
     })()
