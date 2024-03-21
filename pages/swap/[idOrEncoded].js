@@ -508,7 +508,7 @@ function SwapActionButton({ role, data, swap, status }) {
         if (!directSwap) {
           actionButton = <>{btnManualWithdraw}{btnDirectRelease}</>
         } else if (role === 'root') {
-          if (swap.inToken === 32) {
+          if (swap.inToken === 32 && ['0x02ca', '0x00c3', '0x03ef', '0x003c'].includes(swap.outChain)) {
             actionButton = btnTransfer
           } else {
             actionButton = <>{btnManualWithdraw}{btnDirectRelease}</>
