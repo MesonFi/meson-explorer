@@ -301,8 +301,8 @@ function TokenAmountRows ({ address, mesonClient, multicall, core, checkDifferen
       await mesonClient.ready({ from: address }).catch(() => {})
       const token = mesonClient._tokens.find(token => Number(token.addr) === 1)
       if (token) {
-        // const tokenType = MesonClient.tokenType(token.tokenIndex)
-        // add.toBalance(core, tokenType)
+        const tokenType = MesonClient.tokenType(token.tokenIndex)
+        add.toBalance(core, tokenType)
         setBalance(v => ({ ...v, [token.tokenIndex]: core }))
       }
     })()
@@ -396,7 +396,10 @@ function TokenAmountRows ({ address, mesonClient, multicall, core, checkDifferen
       mesonClient._tokens.forEach(async token => {
         const tokenIndex = token.tokenIndex
         const tokenType = MesonClient.tokenType(tokenIndex, true)
-        const doNotAdd = tokenType === 'pod' || (tokenIndex === 255 && Number(token.addr) !== 1)
+        const doNotAdd =
+          tokenType === 'pod' ||
+          mesonClient.isCoreToken(tokenIndex) ||
+          (tokenIndex === 255 && Number(token.addr) !== 1)
 
         const deposit = await mesonClient.getBalanceInPool(address, tokenIndex).catch(() => {})
         if (deposit) {
@@ -413,7 +416,7 @@ function TokenAmountRows ({ address, mesonClient, multicall, core, checkDifferen
             setBalance(v => ({ ...v, [tokenIndex]: tokenBalance.value }))
           }
         } else {
-          setBalance(v => ({ ...v, [tokenIndex]: BigNumber.from(0) }))
+          // setBalance(v => ({ ...v, [tokenIndex]: BigNumber.from(0) }))
         }
         
         if (withSrFee) {
