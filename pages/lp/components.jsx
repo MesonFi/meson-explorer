@@ -396,10 +396,7 @@ function TokenAmountRows ({ address, mesonClient, multicall, core, checkDifferen
       mesonClient._tokens.forEach(async token => {
         const tokenIndex = token.tokenIndex
         const tokenType = MesonClient.tokenType(tokenIndex, true)
-        const doNotAdd =
-          tokenType === 'pod' ||
-          mesonClient.isCoreToken(tokenIndex) ||
-          (tokenIndex === 255 && Number(token.addr) !== 1)
+        const doNotAdd = tokenType === 'pod' || (tokenIndex === 255 && Number(token.addr) !== 1)
 
         const deposit = await mesonClient.getBalanceInPool(address, tokenIndex).catch(() => {})
         if (deposit) {
@@ -409,7 +406,7 @@ function TokenAmountRows ({ address, mesonClient, multicall, core, checkDifferen
           setDeposit(v => ({ ...v, [tokenIndex]: deposit.value }))
         }
         
-        if (!doNotAdd) {
+        if (!doNotAdd && !mesonClient.isCoreToken(tokenIndex)) {
           const tokenBalance = await mesonClient.getTokenBalance(address, tokenIndex).catch(() => {})
           if (tokenBalance) {
             add.toBalance(tokenBalance.value, tokenType)
