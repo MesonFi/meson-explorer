@@ -298,7 +298,10 @@ export function EncodedSplitted({ swap }) {
             <span className='hidden group-hover:block absolute bottom-6 bg-white border rounded-lg px-2 py-1'>
             {
               swap._newFormat && swap.swapForCoreToken
-              ? <div><div className='text-sm text-gray-500'>Swap for core amount</div><div>{fmt.format(ethers.utils.formatUnits(swap.amountForCoreToken, 6))}</div></div>
+              ? <div>
+                  <div className='text-sm text-gray-500'>Swap for core amount</div>
+                  <div>{ethers.utils.formatUnits(swap.amountForCoreToken, 6)}</div>
+                </div>
               : parseInt('0x' + encoded.substring(splitPos, 26))
             }
             </span>
