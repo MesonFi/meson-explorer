@@ -4,6 +4,7 @@ import { ethers } from 'ethers'
 import { Td } from 'components/Table'
 
 const fmt = Intl.NumberFormat()
+const fmtD3 = Intl.NumberFormat('en', { minimumFractionDigits: 3 })
 
 export function StatTableRow({ data }) {
   const { _id: date, count, api, auto, m2, vol = {}, fee = {}, addresses } = data
@@ -33,7 +34,7 @@ export function formatVol (value, symbol) {
     return
   }
   if (symbol) {
-    return fmt.format(ethers.utils.formatUnits(value, 6))
+    return fmtD3.format(ethers.utils.formatUnits(value, 6))
   }
   const amount = Math.floor(ethers.utils.formatUnits(value, 6))
   return `$${fmt.format(amount)}`
