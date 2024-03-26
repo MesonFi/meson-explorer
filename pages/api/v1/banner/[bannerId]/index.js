@@ -53,7 +53,7 @@ async function get(req, res) {
     const query = {
       created: {
         $gt: new Date('2024-03-19T00:00:00.000Z'),
-        $lt: new Date('2024-03-25T00:00:00.000Z'),
+        $lt: new Date('2024-03-27T00:00:00.000Z'),
       },
       'events.name': 'RELEASED',
     }
